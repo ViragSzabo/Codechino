@@ -1,4 +1,5 @@
 import csv, json
+import pandas as pd
 from collections import Counter, defaultdict
 from datetime import datetime
 
@@ -204,6 +205,8 @@ for order in orders:
     # Most popular tables
     most_popular_tables = table_counts.most_common()
 
+df_orders = pd.DataFrame(orders)
+
 # 🧮 Summary
 summary = {
     "Total Spending Per Year": dict(spending_per_year),
@@ -219,21 +222,19 @@ summary = {
 }
 
 # 💾 Export
-with open("sam_orders.json", "w", encoding="utf-8") as f:
-    json.dump([dict(o, Date=o["Date"].strftime("%Y-%m-%d")) for o in orders], f, indent=4)
+def export_json(df, filename="sam_orders.json"):
+    with open(filename, "w", encoding="utf-8") as f:
+        json.dump([dict(o, Date=o["Date"].strftime("%Y-%m-%d")) for o in df.to_dict(orient="records")], f, indent=4)
 
-with open("sam_summary.csv", "w", newline="", encoding="utf-8") as f:
-    writer = csv.writer(f)
-    writer.writerow(["Category", "Spending (€)"])
-    for cat, val in spending_per_category.items():
-        writer.writerow([cat, round(val, 2)])
-
-# 🪞 Display summary
-for key, value in summary.items():
-    print(f"{key}:")
-    if isinstance(value, dict):
-        for k, v in value.items():
-            print(f"    {k}: {v}")
-    else:
-        print(f"    {value}")
-    print()
+def export_csv_summary(df, filename="sam_summary.csv"):
+    spending_per_category = defaultdict(float)
+    for _, row in df.iterrows():
+        for item in row["Items"]:
+            for cat, items in menu.items():
+                if item in items:
+                    spending_per_category[cat] += prices[item]
+    with open(filename, "w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(["Category", "Spending (€)"])
+        for cat, val in spending_per_category.items():
+            writer.writerow([cat, round(val, 2)])
