@@ -1,2 +1,2 @@
-# Codechino
-Code at your favourite coffee place.
+# Codechino ☕💻
+_Code at your favourite coffee place._
