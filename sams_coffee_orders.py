@@ -105,7 +105,7 @@ menu = {
     "Chocolate brownie cake": 4.80,
     "Matcha roll": 6.00,
     },
-},
+}
 
 # Flatten menu for price lookup
 prices = {item: price for category in menu.values() for item, price in category.items()}
@@ -164,16 +164,17 @@ order_data = [
     (["Latte Machiatto", "Cinnamon bun"], "2025.10.25", 16),
     (["Cappuccino", "Hazelnoot caramel cake", "Water klein"], "2025.10.29", 4),
     (["Latte Machiatto", "Cappuccino"], "2025.10.31", 3),
-    (["Cappuccino", "Water klein"], "2025.11.04", 3)
+    (["Cappuccino", "Water klein", "Caffe latte", "Banana cake"], "2025.11.04", 3)
 ]
 
 # 🆔 Add order IDs and convert dates
 orders = []
 for i, (items, date, table) in enumerate(order_data, start=1):
+    date = date.rstrip(".")
     orders.append({
         "Order ID": i,
         "Items": items,
-        "Date": datetime.strptime(date, "%Y.%m.%d."),
+        "Date": datetime.strptime(date, "%Y.%m.%d"),
         "Table": table
     })
 
@@ -187,6 +188,7 @@ for order in orders:
     total = sum(prices.get(item, 0) for item in order["Items"])
     order["Total (€)"] = round(total, 2)
     order_totals.append(total)
+    table_counts = Counter(order["Table"] for order in orders)
 
     # Year/month stats
     y, m = order["Date"].year, order["Date"].month
@@ -199,6 +201,9 @@ for order in orders:
             if item in items:
                 spending_per_category[category] += prices.get(item, 0)
 
+    # Most popular tables
+    most_popular_tables = table_counts.most_common()
+
 # 🧮 Summary
 summary = {
     "Total Spending Per Year": dict(spending_per_year),
@@ -209,7 +214,8 @@ summary = {
     "Average Order Spend (€)": round(sum(order_totals) / len(order_totals), 2),
     "Most Expensive Order (€)": max(order_totals),
     "Least Expensive Order (€)": min(order_totals),
-    "Spending by Category (€)": dict(spending_per_category)
+    "Spending by Category (€)": dict(spending_per_category),
+    "Table Usage Frequency": {f"Table {table}": count for table, count in most_popular_tables }
 }
 
 # 💾 Export
