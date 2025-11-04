@@ -3,9 +3,9 @@ _Code at your favourite coffee place._
 
 [![Python](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/)
 [![Streamlit](https://img.shields.io/badge/streamlit-1.30-orange.svg)](https://streamlit.io/)
-[![GitHub release](https://img.shields.io/github/v/release/yourusername/codechino?include_prereleases&label=release)](https://github.com/yourusername/codechino/releases)
+[![GitHub release](https://img.shields.io/github/v/release/ViragSzabo/codechino?include_prereleases&label=release)](https://github.com/ViragSzabo/codechino/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Issues](https://img.shields.io/github/issues/yourusername/codechino)](https://github.com/yourusername/codechino/issues)
+[![Issues](https://img.shields.io/github/issues/ViragSzabo/codechino)](https://github.com/ViragSzabo/codechino/issues)
 
 A Python project to track coffee shop orders, spending,
 and favourite tables, with interactive analytics.
